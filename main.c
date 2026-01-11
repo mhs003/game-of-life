@@ -4,7 +4,7 @@
 
 #define FPS 20
 #define GRID_SIZE 40 // 1:1 grid
-#define CELL_SIZE 20  // 1:1 cell
+#define CELL_SIZE 20 // 1:1 cell
 #define WINDOW_HEIGHT GRID_SIZE *CELL_SIZE
 #define WINDOW_WIDTH GRID_SIZE *CELL_SIZE
 #define COLOR_ALIVE BLUE
@@ -64,7 +64,8 @@ void InitRandomCells(Grid *grid)
     }
 }
 
-void ClearGrid(Grid *grid) {
+void ClearGrid(Grid *grid)
+{
     for (int row = 0; row < GRID_SIZE; row++)
     {
         for (int col = 0; col < GRID_SIZE; col++)
@@ -125,6 +126,21 @@ void ScanGrid(Grid *grid, Grid *scannedGrid)
     }
 }
 
+bool AnyAlive(Grid *grid)
+{
+    bool anyAlive = false;
+    Cell *ptr = &grid->cells[0][0];
+    for (int c = 0; c < GRID_SIZE * GRID_SIZE; c++)
+    {
+        if (ptr[c].alive)
+        {
+            anyAlive = true;
+            break;
+        }
+    }
+    return anyAlive;
+}
+
 int main(int argc, char *argv[])
 {
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Conway's Game of Life");
@@ -137,44 +153,58 @@ int main(int argc, char *argv[])
 
     while (!WindowShouldClose())
     {
-        BeginDrawing();
-        ClearBackground(BLACK);
-
         // Key Events
         if (IsKeyPressed(KEY_R))
         {
             InitRandomCells(&grid);
         }
-        if (IsKeyPressed(KEY_SPACE)) {
+        if (IsKeyPressed(KEY_SPACE))
+        {
             shouldRun = !shouldRun;
         }
-        if(IsKeyPressed(KEY_C)) {
+        if (IsKeyPressed(KEY_C))
+        {
             ClearGrid(&grid);
             ClearGrid(&scannedGrid);
         }
 
         // Mouse Click Event
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+        {
             int col = GetMouseX() / CELL_SIZE;
             int row = GetMouseY() / CELL_SIZE;
-            if(row >= 0 && row < GRID_SIZE && col >= 0 && col < GRID_SIZE) {
+            if (row >= 0 && row < GRID_SIZE && col >= 0 && col < GRID_SIZE)
+            {
                 grid.cells[row][col].alive = !grid.cells[row][col].alive;
-            } 
+            }
         }
 
-        // Game 
+        // Begin Drawing Graphics
+        BeginDrawing();
+        ClearBackground(BLACK);
+
+        // Game
         RenderGrid(&grid);
-        if (shouldRun) {
+        if (shouldRun)
+        {
             ScanGrid(&grid, &scannedGrid);
             grid = scannedGrid;
         }
 
-        // 
+        if (!AnyAlive(&grid))
+        {
+            shouldRun = false;
+        }
+
+        //
         DrawFPS(GetScreenWidth() - 85, 10);
-        if (shouldRun) {
+        if (shouldRun)
+        {
             DrawText("Running...", 10, 10, 20, GREEN);
-        } else {
-            DrawText("Paused", 10, 10, 20, ORANGE);
+        }
+        else
+        {
+            DrawText("Stopped", 10, 10, 20, ORANGE);
         }
         EndDrawing();
     }
