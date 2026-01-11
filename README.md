@@ -2,8 +2,6 @@
 
 I tried [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) in **C** with [raylib](https://github.com/raysan5/raylib/). This may not follow best practices, but it might be the beginning of a C journey for me.
 
-![](./demo.mp4)
-
 ### try
 
 Before compiling, ensure [raylib](https://github.com/raysan5/raylib/) is installed.
@@ -34,4 +32,4 @@ then run
 
 ## License
 
-MIT (see [LICENSE](https://github.com/mhs003/game-of-life/blob/main/LICENSE) file)
+MIT (see [LICENSE](https://github.com/mhs003/game-of-life/blob/master/LICENSE) file)
