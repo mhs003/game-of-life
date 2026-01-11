@@ -1,0 +1,15 @@
+@vars:
+    BUILD_DIR=./build/
+    MAIN_BIN=main
+    ENTRY=./main.c
+
+build:
+    !mkdir -p {{BUILD_DIR}}
+    !cc -o {{BUILD_DIR}}{{MAIN_BIN}} {{ENTRY}} -lraylib -Wall
+
+run:
+    !{{BUILD_DIR}}{{MAIN_BIN}}
+
+main:
+    @ build run
+
